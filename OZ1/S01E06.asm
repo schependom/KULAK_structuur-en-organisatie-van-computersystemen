@@ -13,23 +13,24 @@
 #	geordend:	s2
 #	i:			s3
 main:									# main () {								
-		li		s2, 1					#	geordend = 1;
+		li		s2, 1					#	geordend = 1; /* true */
 		li		s3, 1					#	i = 1;
 		li		a7, 5
 		ecall							#	voriggetal = getint();
 		mv		s0, a0
 		li		t0, 10
-wh:		bgt		s3, t0, endWh			#	while (i < 10
-		beqz	s2, endWh				#		&& geordend != 0) {
+wh:		bge		s3, t0, endWh			#	while (i < 10
+		beqz	s2, endWh				#		&& geordend != 0) { /* als er || had gestaan -> extra adres om in while te springen */
 		li		a7, 5
 		ecall							#		getal = getint();
 		mv		s1, a0
 		ble		s0, s1, endif			#		if (voriggetal > getal ) {
-		li		s2, 0					#			geordend = 0;
+		li		s2, 0					#			geordend = 0; /* false */
 endif:									#		}
 		mv		s0, s1					# 		voriggetal = getal;
 		addi	s3, s3, 1				# 		i += 1;
-endWh:									#	}
+		j		wh						#	}
+endWh:									
 		li    	a7, 1		
 		mv		a0, s2					#	printint(geordend);
 		ecall	
