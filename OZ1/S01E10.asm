@@ -22,7 +22,7 @@ main:									# main () {
 		li 		a7, 11					# 	// space
 		ecall
 		li		a7, 1
-		li		a0, -1					# 	// -1
+		li		a0, 1					# 	// 1
 		ecall
 		li		a7, 11
 		li		a0, 10					#	// new line
