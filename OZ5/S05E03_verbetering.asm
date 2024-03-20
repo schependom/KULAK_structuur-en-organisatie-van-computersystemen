@@ -108,12 +108,10 @@ else:		li		a0, 0			#	else
 # LOKALE VARIABELE:
 #	i:	s1
 #	a0: s2
+#	a1: s3
 drukrij:							# void drukrij(struct rationaalgetal *r, int n) {
 
-			# backup van fp
-			addi	sp, sp, -4
-			sw		fp, 0(sp)
-			mv		fp, sp
+			# geen spilling dus we moeten de fp niet backupen
 			
 			# maak backup van saved registers
 			addi	sp, sp, -12
@@ -127,7 +125,9 @@ drukrij:							# void drukrij(struct rationaalgetal *r, int n) {
 			
 forD:		bge		s1, s3, eForD	#	for( ; i<n; ) {
 
-			slli	t0, s1, 2		#		//4*i
+			li		t0, 12
+			mul		t0, t0, s1		#		// maal 12! 4*3 bytes
+			
 			add		t0, s2, t0		#		//&(r+i)
 			# we moeten de struct op de stack zetten
 			addi	sp, sp, -12
@@ -157,10 +157,6 @@ eForD:
 			lw		s2, 4(sp)
 			lw		s3, 8(sp)
 			addi	sp, sp, 12
-			
-			# restore fp
-			lw		fp, 0(sp)
-			addi	sp, sp, 4
 			
 			ret						# }
 			
@@ -329,6 +325,30 @@ main:								# main() {
 			lw		ra, 0(sp)
 			addi	sp, sp, 4
 			
+			la		t2, rij
+			
+			# call vereenvoudig
+			# zet parameters goed
+			addi	sp, sp, -12		#	// plaats voor param
+			lw		t1, 0(t2)
+			sw		t1, 0(sp)
+			lw		t1, 4(t2)
+			sw		t1, 4(sp)
+			lw		t1, 8(t2)
+			sw		t1, 8(sp)		#	// rij[in] op stack	
+			li		a0, 12			
+			mul		a0, a0, s3		#	// a0 = 12*in
+			add		a0, a0, t2		#	// a0 = &rij[in]
+			# roep vereenvoudig op
+			addi	sp, sp, -4		#
+			sw		ra, 0(sp)		#
+			call  	vereenvoudig	#	vereenvoudig(rij[in],&(rij[in]));
+			lw		ra, 0(sp)		#
+			addi	sp, sp, 4		#
+			# verwijder param van de stack
+			addi	sp, sp, 12
+			
+			
 			li		s1, 1			#	int i=1;
 			li		s4, 5			#	// 5 in s4
 			la		s5, rij
@@ -371,11 +391,23 @@ forM:		bge		s1, s4, eForM	#	for( ; i<5; ) {
 whM:		li		t2, 12
 			mul		t0, s2, t2		#		// 12*j
 			mul		t1, s3, t2		#		// 12*in
-			# zet argumenten goed voor isgelijk
-			add		a0, s5, t0		#		&rij[j]
-			lw		a0, 0(a0)		#		rij[j]
-			add		a1, s5, t1		#		&rij[in]
-			lw		a1,	0(a1)		#		rij[in]
+			
+			# zet rij[j] en rij[in] op de stack (allebei volledige structs)
+			add		t0, s5, t0		#		&rij[j]
+			add		t1, s5, t1		#		&rij[in]
+			addi	sp, sp, -24
+			lw		t3, 0(t0)
+			sw		t3, 0(sp)
+			lw		t3, 4(t0)
+			sw		t3, 4(sp)
+			lw		t3, 8(t0)
+			sw		t3, 8(sp)
+			lw		t3, 0(t1)
+			sw		t3, 12(sp)
+			lw		t3, 4(t1)
+			sw		t3, 16(sp)
+			lw		t3, 8(t1)
+			sw		t3, 20(sp)
 			
 			# call isgelijk
 			addi	sp, sp, -4
@@ -383,6 +415,9 @@ whM:		li		t2, 12
 			call	isgelijk		#		// isgelijk(rij[j],rij[in])
 			lw		ra, 0(sp)
 			addi	sp, sp, 4
+			
+			# geef plaats op de stack terug vrij
+			addi	sp, sp, 24
 			
 			# het resultaat van isgelijk zit in a0!
 			bnez	a0, eWhM		#		while(!isgelijk(rij[j],rij[in]) {

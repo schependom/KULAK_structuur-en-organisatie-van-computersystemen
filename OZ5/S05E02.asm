@@ -9,7 +9,7 @@
 .text
 
 ggdI:								# int ggd(int a, int b){
-			rem		t0, a0, a1		#	r = a % b;
+			rem		t0, a0, a1		#	r = a % b; 
 wh:			beqz	t0, endW		#	while(r != 0){
 			mv		a0, a1			#		a = b;
 			mv		a1, t0			#		b = r;
