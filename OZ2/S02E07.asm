@@ -1,4 +1,4 @@
-# SESSION 02 - EXCERCISE 05
+# SESSION 02 - EXCERCISE 7
 
 .globl 	main
 .data

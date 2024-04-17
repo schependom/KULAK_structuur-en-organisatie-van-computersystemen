@@ -32,7 +32,7 @@ leesco:								# void leesco(struct Tco *co) {
 			ecall					
 			li		a7, 5
 			ecall					
-			sw		a0, 4(s1)		#	co->x = getint();
+			sw		a0, 4(s1)		#	co->y = getint();
 			
 			# herstel s1
 			lw		s1, 0(sp)		

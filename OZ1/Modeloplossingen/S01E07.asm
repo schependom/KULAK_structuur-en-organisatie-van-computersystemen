@@ -31,7 +31,7 @@ wh:		bge		s2, s3, endWh	# 	while (aantal < n) {
 		addi	s2, s2, 1		#		aantal++;
 		bnez	s1, else		#		if (getal == 0) {
 		addi	s4, s4, 1		#			anul++;
-		j		endif			#		} else {
+		j		endif			#		} else {					# jumpen naar endif!
 else:	blez	s1, else2		#			if (getal > 0) {
 		addi	s5, s5, 1		#				apos++;
 		j		endif			#			} else {

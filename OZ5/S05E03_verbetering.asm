@@ -139,11 +139,11 @@ forD:		bge		s1, s3, eForD	#	for( ; i<n; ) {
 			sw		t1, 8(sp)		
 			
 			# roep functie aan
-			addi	sp, sp, 4
+			addi	sp, sp, -4
 			sw		ra, 0(sp)
 			call	drukR			#		drukrationaal(*(r+i));
 			lw		ra, 0(sp)
-			addi	sp, sp, -4
+			addi	sp, sp, 4
 
 			# geef plaats van argument struct op de stack terug vrij
 			addi	sp, sp, 12
