@@ -14,7 +14,7 @@
 main:							# main(){
 		li		t0, 10			#									// t0 = 10
 		la		t1, a			#									// t1 = &a[0] = a
-		li		s3, 1			#	i = 0;
+		li		s3, 0			#	i = 0;
 for1:	bgt		s3, t0, endF1	#	for(    ; i<=10;    ;){
 		slli	t2, s3, 2		#	  								// t2 = 4*i
 		add		t2, t2, t1		#	   								// t2 = &a[i]

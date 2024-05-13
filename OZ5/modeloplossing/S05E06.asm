@@ -93,13 +93,16 @@ endWI:
 			# zet even a0 aan de kant
 			addi	sp, sp, -4
 			sw		a0, 0(sp)
+			
 			li		a0, 8			
 			li		a7, 9			
 			ecall					
 			mv		t2, a0			#	n = malloc(8);
+			
 			# herstel a0
 			lw		a0, 0(sp)
 			addi	sp, sp, 4
+			
 			sw		a1, 0(t2)		#	n->info = g;
 			sw		t0, 4(t2)		#	n->volgend = p;
 			sw		t2, 4(t1)		#	pp->volgend = n;

@@ -186,7 +186,7 @@ vindmaxco:								# void vindmaxco(struct Tco cr[], struct Tco *maxco, int n) {
 		li		s1, 1					#	int i = 1;
 		li		s2, 0					#	int max = 0;
 		
-forMax:	bge		s1, a2, endForMax			#	for( ; i<n; ) {
+forMax:	bge		s1, a2, endForMax		#	for( ; i<n; ) {
 
 		# zet twee structs als argumenten op de stack in volgorde van signatuur
 		addi	sp, sp, -16
